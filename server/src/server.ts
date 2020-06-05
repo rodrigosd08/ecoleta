@@ -1,21 +1,42 @@
-import express from 'express'
+import express, { response } from 'express'
 
 const app = express();
 
+app.use(express.json())
+
+const users = [
+  'Rodrigo', // 0
+  'Juliana', // 1
+  'Tainá', // 2
+  'Thales', // 3
+  'Maria' // 4
+]
+
 app.get('/users', (request, response) => {
-  console.log('Listagem de usuários')
+  const search = String(request.query.search).toLowerCase()
+  
+  const filteredUsers = search ? users.filter(user => user.toLowerCase().includes(search)) : users
+  
+  return response.json(filteredUsers)
+})
 
-  // response.send('Hello World!')
+app.get('/users/:id', (request, response) => {
+  const id = Number(request.params.id)
 
-  // JSON
+  const user = users[id]
 
-  response.json([
-    'Rodrigo',
-    'Juliana',
-    'Tainá',
-    'Thales',
-    'Maria'
-  ])
+  return response.json(user)
+})
+
+app.post('/users', (request, response) => {
+  const data = request.body
+
+  const user = {
+    name: data.name,
+    email: data.email
+  }
+  
+  return response.json(user)
 })
 
 app.listen(3333)
