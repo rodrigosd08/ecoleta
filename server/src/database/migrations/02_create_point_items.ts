@@ -11,7 +11,7 @@ export async function up(knex: Knex) {
     table.string('item_id').notNullable()
     .references('id')
     .inTable('items')
-    
+
   })
 }
 
